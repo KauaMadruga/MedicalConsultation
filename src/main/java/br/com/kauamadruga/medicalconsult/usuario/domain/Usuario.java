@@ -1,9 +1,12 @@
 package br.com.kauamadruga.medicalconsult.usuario.domain;
 
+import br.com.kauamadruga.medicalconsult.consulta.domain.Consulta;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,18 +26,24 @@ public class Usuario {
     private String telefone;
     @Column(name= "DATANASCIMENTO")
     private Date dataNascimento;
-//    private Permissao permissao;
+    @Column(name = "PERMISSAO")
+    private Permissao permissao;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<Consulta> consultas;
 
-    public Usuario(){
-    }
-
-    public Usuario(long idUsuario, String nomeUsuario, String email, String cpf, String telefone, Date dataNascimento) {
+    public Usuario(long idUsuario, String nomeUsuario, String email, String cpf, String telefone, Date dataNascimento, Permissao permissao) {
         this.idUsuario = idUsuario;
         this.nomeUsuario = nomeUsuario;
         this.email = email;
         this.cpf = cpf;
         this.telefone = telefone;
         this.dataNascimento = dataNascimento;
+        this.permissao = permissao;
     }
+
+    public Usuario(){
+    }
+
 }

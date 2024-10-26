@@ -1,7 +1,7 @@
 package br.com.kauamadruga.medicalconsult.usuario.services;
 
-import br.com.kauamadruga.medicalconsult.usuario.repository.UsuarioRepository;
 import br.com.kauamadruga.medicalconsult.usuario.domain.Usuario;
+import br.com.kauamadruga.medicalconsult.usuario.repository.UsuarioRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,25 +18,26 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    public Usuario buscarUsuario(Long id) {
+        return usuarioRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Usuario não encontrado! ID: ", id));
+    }
+
     public List<Usuario> listarUsuarios() {
         return usuarioRepository.findAll();
     }
 
-    public Usuario buscarUsuarioPorId(Long id) {
-        return usuarioRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Usuario não encontrado pelo Id: ", id));
+    public void deletarUsuario(Long id){
+        Usuario usuario = buscarUsuario(id);
+        usuarioRepository.delete(usuario);
     }
 
-    public Usuario atualizarUsuarioPorId(Usuario usuario, Long id) {
-        if (usuarioRepository.existsById(id)) {
-            usuario.setIdUsuario(id);
-            return usuarioRepository.save(usuario);
-
-        } else {
-            throw new ObjectNotFoundException("Usuário nao encontrado pelo id ", id);
-        }
-    }
-
-    public void  deletarUsuarioPorId(Long id){
-        usuarioRepository.deleteById(id);
+    public Usuario atualizarUsuario(Usuario usuario, Long id) {
+        Usuario upUsuario = buscarUsuario(id);
+        upUsuario.setNomeUsuario(usuario.getNomeUsuario());
+        upUsuario.setEmail(usuario.getEmail());
+        upUsuario.setTelefone(usuario.getTelefone());
+        upUsuario.setDataNascimento(usuario.getDataNascimento());
+        upUsuario.setPermissao(usuario.getPermissao());
+        return usuarioRepository.save(upUsuario);
     }
 }
