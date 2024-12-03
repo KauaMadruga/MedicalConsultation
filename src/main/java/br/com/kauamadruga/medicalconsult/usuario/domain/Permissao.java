@@ -2,7 +2,8 @@ package br.com.kauamadruga.medicalconsult.usuario.domain;
 
 public enum Permissao {
     ADMIN("ADMIN"),
-    SECRETARIO("SECRETARIO");
+    SECRETARIO("SECRETARIO"),
+    PACIENTE("PACIENTE");
 
     private final String descricao;
 
